@@ -44,6 +44,10 @@ export class InputField implements Field{
     })
     document.querySelector(where).appendChild(container);
   }
+
+  getValue(): string{
+    return this.value;
+  }
 }
 
 export class TextAreaField implements Field{
@@ -72,6 +76,10 @@ export class TextAreaField implements Field{
       this.value = input.value;
     })
     document.querySelector(where).appendChild(container);
+  }
+
+  getValue(): string{
+    return this.value;
   }
 }
 
@@ -103,6 +111,10 @@ export class DateField implements Field{
     })
     document.querySelector(where).appendChild(container);
   }
+
+  getValue(): string{
+    return this.value;
+  }
 }
 
 export class EmailField implements Field{
@@ -133,6 +145,10 @@ export class EmailField implements Field{
     })
     document.querySelector(where).appendChild(container);
   }
+
+  getValue(): string{
+    return this.value;
+  }
 }
 
 export class SelectField implements Field{
@@ -162,15 +178,23 @@ export class SelectField implements Field{
       option.value = this.options[i];
       option.innerHTML = this.options[i];
       input.appendChild(option);
+
+      if(i == 0){
+        this.value = option.value;
+      }
     }
 
     this.label.render(container);
     container.appendChild(input);
 
-    input.addEventListener('input', () => {
+    input.addEventListener('change', () => {
       this.value = input.value;
     })
     document.querySelector(where).appendChild(container);
+  }
+
+  getValue(): string{
+    return this.value;
   }
 }
 
@@ -179,12 +203,14 @@ export class CheckboxField implements Field{
   label: FieldLabel;
   type: FieldType;
   value: string;
+  checked: boolean;
 
   constructor(name: string, labelName: string, value: string){
     this.type = FieldType.checkbox;
     this.name = name;
     this.value = value;
     this.label = new FieldLabel(labelName);
+    this.checked = false;
   }
 
   render(where: string): void{
@@ -197,9 +223,13 @@ export class CheckboxField implements Field{
     this.label.render(container);
     container.appendChild(input);
 
-    input.addEventListener('input', () => {
-      this.value = input.value;
+    input.addEventListener('change', () => {
+      this.checked = input.checked;
     })
     document.querySelector(where).appendChild(container);
+  }
+
+  getValue(): boolean{
+    return this.checked;
   }
 }

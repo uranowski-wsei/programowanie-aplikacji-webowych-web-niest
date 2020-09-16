@@ -7,4 +7,11 @@ export interface Field{
   type: FieldType,
   value: string,
   render(where: string): void,
+  getValue(): any,
+}
+
+export interface DataStorage{
+  saveDocument(values: any): string;
+  loadDocument(id: string): any;
+  getDocuments(): string[];
 }
