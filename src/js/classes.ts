@@ -4,18 +4,26 @@ import { Field, DataStorage } from './interfaces';
 
 export class Form {
   fields: Field[];
-  documentId: string;
+  documentId?: string;
+  id: string;
 
-  constructor(fields: Field[], documentId?: string, forceBuild = false){
+  constructor(fields: Field[], documentId?: string, forceBuild = false, id = ''){
     this.fields = fields;
 
     if(documentId){
       this.documentId = documentId;
     }
 
+    if(id){
+      this.id = id;
+    } else {
+      this.id = 'form-' + Date.now().toString();
+    }
+
     if(documentId || forceBuild){
       for(let i = 0; i < this.fields.length; i++){
         const field = this.fields[i];
+        console.log(this.fields);
 
         switch(field.type){
           case FieldType.textInput:
@@ -78,7 +86,7 @@ export class Form {
     returnButton.type = 'button';
     form.appendChild(returnButton);
     returnButton.addEventListener('click', () => {
-      window.location.href = 'index.html';
+      window.history.back();
     })
   }
 
@@ -112,7 +120,7 @@ export class LocStorage implements DataStorage {
   }
 
   saveForm(form: Form){
-    const id = 'form-' + Date.now().toString();
+    const id = form.id;
     window.localStorage.setItem(id, JSON.stringify(form));
     return id;
   }
@@ -251,6 +259,10 @@ export class FormCreator {
 
   createField(type: string, name: string, label: string, value: string, options?: string[], checked?: boolean){
     let field;
+    if(!type || !name || !label){
+      alert('Podaj typ, nazwę pola i nazwę etykiety');
+      return;
+    }
 
     switch(type){
       case 'Text Input':
@@ -318,8 +330,56 @@ export class FormCreator {
     const backButton = document.createElement('button');
     backButton.innerHTML = 'Wstecz';
     backButton.addEventListener('click', () => {
-      window.location.href = 'index.html';
+      window.history.back();
     });
     document.querySelector(where).appendChild(backButton);
+  }
+
+  getFormList(): Form[]{
+    const storageKeys = Object.keys(window.localStorage);
+    const forms: Form[] = [];
+
+    for(let i = 0; i < storageKeys.length; i++){
+      if(storageKeys[i].indexOf('form-') >= 0){
+        let form = JSON.parse(window.localStorage.getItem(storageKeys[i])) as Form;
+        form = new Form(form.fields, null, true, storageKeys[i]);
+        forms.push(form);
+      }
+    }
+    
+    return forms;
+  }
+
+  renderFormList(where: string):void{
+    const formList = this.getFormList();
+
+    const table = document.createElement('table');
+    const tableHeadRow = document.createElement('tr');
+    table.appendChild(tableHeadRow);
+    const tableHeadId = document.createElement('th');
+    tableHeadId.innerHTML = 'Id';
+    tableHeadRow.appendChild(tableHeadId);
+
+    const tableHeadEdit = document.createElement('th');
+    tableHeadEdit.innerHTML = 'Wypełnij';
+    tableHeadRow.appendChild(tableHeadEdit);
+
+    for(let i = 0; i < formList.length; i++){
+      const row = document.createElement('tr');
+      const cell = document.createElement('td');
+      cell.innerHTML = formList[i].id;
+
+      const editCell = document.createElement('td');
+      const editCellLink = document.createElement('a');
+      editCellLink.innerHTML = 'Wypełnij';
+      editCellLink.href = 'new-document.html?id=' + formList[i].id;
+      editCell.appendChild(editCellLink);
+
+      row.appendChild(cell);
+      row.appendChild(editCell);
+      table.appendChild(row);
+    }
+
+    document.querySelector(where).appendChild(table);
   }
 }

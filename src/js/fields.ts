@@ -171,18 +171,15 @@ export class SelectField implements Field{
     container.className = 'field';
     let input = document.createElement('select');
     input.name = this.name;
-    input.value = this.value;
 
     for(let i = 0; i < this.options.length; i++){
       let option = document.createElement('option');
       option.value = this.options[i];
       option.innerHTML = this.options[i];
       input.appendChild(option);
-
-      if(i == 0){
-        this.value = option.value;
-      }
     }
+    
+    input.value = this.value;
 
     this.label.render(container);
     container.appendChild(input);
