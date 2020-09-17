@@ -1,8 +1,10 @@
 import { InputField, TextAreaField, EmailField, SelectField, CheckboxField } from './fields';
-import { Form, DocumentList } from './classes';
+import { Form, DocumentList, Router, LocStorage, FormCreator } from './classes';
 
 export class App {
   constructor(){
+    const documentList = new DocumentList();
+
     switch(window.location.pathname){
       case '/new-document.html':
         const form = new Form([
@@ -34,9 +36,20 @@ export class App {
         break;
 
       case '/document-list.html':
-        const documentList = new DocumentList();
         documentList.getDocumentList();
         documentList.render('#app');
+        break;
+
+      case '/edit-document.html':
+        const router = new Router();
+        const documentForEdit = documentList.getDocument(router.getParam('id'));
+        
+        documentForEdit.form.render('#app');
+        break;
+
+      case '/new-form.html':
+        const creator = new FormCreator();
+        creator.render('#app');
         break;
     }
   }

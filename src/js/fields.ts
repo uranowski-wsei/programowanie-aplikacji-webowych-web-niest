@@ -205,12 +205,17 @@ export class CheckboxField implements Field{
   value: string;
   checked: boolean;
 
-  constructor(name: string, labelName: string, value: string){
+  constructor(name: string, labelName: string, value: string, checked?: boolean){
     this.type = FieldType.checkbox;
     this.name = name;
     this.value = value;
     this.label = new FieldLabel(labelName);
-    this.checked = false;
+
+    if(checked){
+      this.checked = checked;
+    } else {
+      this.checked = false;
+    }
   }
 
   render(where: string): void{
@@ -220,6 +225,7 @@ export class CheckboxField implements Field{
     input.type = 'checkbox';
     input.name = this.name;
     input.value = this.value;
+    input.checked = this.checked;
     this.label.render(container);
     container.appendChild(input);
 
