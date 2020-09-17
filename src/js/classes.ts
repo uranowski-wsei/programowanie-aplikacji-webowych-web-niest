@@ -23,7 +23,6 @@ export class Form {
     if(documentId || forceBuild){
       for(let i = 0; i < this.fields.length; i++){
         const field = this.fields[i];
-        console.log(this.fields);
 
         switch(field.type){
           case FieldType.textInput:
@@ -166,7 +165,6 @@ export class DocumentList {
       if(storageKeys[i].indexOf('document-') >= 0){
         let document = JSON.parse(window.localStorage.getItem(storageKeys[i])) as Document;
         document = new Document(document.id, document.values, document.form);
-        console.log(document);
         this.documents.push(document);
       }
     }
