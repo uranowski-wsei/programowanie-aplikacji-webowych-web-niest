@@ -1,0 +1,89 @@
+$black: #000000;
+$white: #FFFFFF;
+$blue: #00C9FF;
+$green: #92FE9D;
+
+html{
+  background: linear-gradient(to right, $blue, $green);
+  background-size: cover;
+}
+
+body{
+  font-family: 'Lato', sans-serif;
+  margin: 50px auto;
+  width: 800px;
+  background: $white;
+  border-radius: 20px;
+  padding: 50px;
+}
+
+.title{
+  margin-top: 0;
+  margin-bottom: 50px;
+  font-size: 48px;
+}
+
+nav{
+  display: flex;
+  flex-direction: column;
+
+  a{
+    margin-bottom: 20px;
+    padding: 15px;
+    color: $white;
+    background: $black;
+    border-radius: 20px;
+    text-decoration: none;
+
+    &:hover{
+      background: #222222;
+    }
+  }
+}
+
+.field{
+  display: flex;
+  margin: 20px 0;
+
+  label{
+    width: 30%;
+    padding-right: 20px;
+  }
+
+  input, select, textarea{
+    width: 70%;
+  }
+
+  input, select, option{
+    height: 30px;
+  }
+
+  input[type="checkbox"]{
+    width: auto;
+  }
+}
+
+button{
+  padding: 15px;
+  margin-right: 20px;
+  background: $black;
+  color: $white;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+
+  &:hover{
+    background: #222222;
+  }
+}
+
+table{
+  width: 100%;
+  text-align: center;
+  border: 1px solid $black;
+
+  td, th{
+    border: 1px solid $black;
+    padding: 15px;
+  }
+}
